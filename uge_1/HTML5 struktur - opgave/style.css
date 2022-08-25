@@ -1,0 +1,63 @@
+/* Kig evt på gamle flex-øvelser. Der må være noget hvor man får 
+tingene til at stille sig under hinanden når der ikke er mere plads. 
+Få også artiklerne til at stå i midten af siden.  */
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  grid-gap: 20px;
+}
+
+h2 {
+  margin: 0 0 0 20px;
+  padding: 0;
+}
+
+h3 {
+  padding: 0;
+  margin: 0;
+}
+
+img {
+  width: 100%;
+}
+
+main {
+  border: 1px solid #000000;
+  width: 80vw;
+  margin: 0 auto;
+}
+
+article {
+  border: 1px solid #000000;
+  margin: 0 20px 0 20px;
+  max-width: 300px;
+}
+
+h1 {
+  text-align: center;
+}
+
+footer {
+  text-align: center;
+  border: 1px solid #000000;
+}
+
+header {
+  border: 1px solid #000000;
+  display: grid;
+  justify-content: center;
+}
+/* 
+article:nth-child(2) {
+  background-color: rgb(192, 192, 0);
+} */
+
+.mouseOver {
+  box-shadow: 10px 10px 12px 0px rgba(255, 0, 168, 0.75);
+}
