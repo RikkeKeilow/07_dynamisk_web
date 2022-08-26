@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+        <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Til opgave 3 -->
+    <!-- <article>
+      <h3></h3>
+      <img src="" alt="" />
+      <p>Type:</p>
+      <p>Levested:</p>
+    </article> -->
+
+    <!-- Til opgave 5 -->
+    <!-- <section id="liste"></section> -->
+
+    <section id="liste"></section>
+    <template>
+      <article class="dyr-article">
+        <h2></h2>
+        <img></img>
+        <p id="type">Type:</p>
+        <p id="levested">Levested:</p>
+      </article>
+    </template>
+
+
+    <script>
+      // Opgave 1 - Opret et dyreobjekt
+      //   let dyr = { navn: "gris", type: "pattedyr", billede: "http://mabe-kea.dk/E19/pics/pig.png", levested: "svinefarm" };
+      //   console.log(`navn:${dyr.navn} type:${dyr.type}, levested:${dyr.levested}`);
+
+      //   // Opgave 2 - Vis dyret i DOM
+      //   document.addEventListener("DOMContentLoaded", start);
+      //   function start() {
+      //     console.log("DOM er loadet");
+
+      //   const article = document.querySelector("article");
+      //   const dyr = document.createElement("p");
+      //   dyr.textContent = "dyr: gris, type:pattedyr, levested: svinefarme";
+      //   let billede = document.createElement("img");
+      //   billede.src = "http://mabe-kea.dk/E19/pics/pig.png";
+
+      //   article.appendChild(dyr);
+      //   dyr.appendChild(billede);}
+
+      // // Opgave 3 - Indsæt dyr i struktureret HTML
+      // const h3_overskrift = document.querySelector("h3");
+      // h3_overskrift.textContent = "gris";
+      // console.log(h3_overskrift.textContent);
+
+      // const img_gris = document.querySelector("img");
+      // console.log(img_gris);
+      // img_gris.src = "http://mabe-kea.dk/E19/pics/pig.png";
+      // img_gris.alt = "Blabla beskrivelse om dyret";
+
+      // const type_p = document.querySelector("article:nth-child(1) p");
+      // console.log(type_p.textContent);
+      // type_p.textContent += " pattedyr";
+
+      // const type_p2 = document.querySelector("p:nth-child(1)");
+      // console.log(type_p2.textContent);
+      // type_p2.textContent = "Levested: sump";
+
+      // const img2 = document.querySelector("article:nth-child(2) img");
+      // console.log(img2);
+      // img2.src = "amigo.jpg";
+      // img2.alt = "Et billede af min anden kat";
+
+      // // opgave 2a - udvælg DOM elementer
+      // const overskrift_h1 = document.querySelector("h1");
+      // overskrift_h1.textContent;
+      // console.log(overskrift_h1.textContent);
+      // overskrift_h1.textContent = "Billeder";
+      // console.log(overskrift_h1.textContent);
+
+      // // opgave 2b - udskift tekstindhold i elementer
+      // const artikel1 = document.querySelector("article:nth-child(1) h3");
+      // artikel1.innerHTML = "bla <i>bla</i> bla";
+      // const artikel2 = document.querySelector("article:nth-child(2) h3");
+      // artikel2.textContent = "blablabla";
+
+      // Opgave 4 - Dyr i attay
+      document.addEventListener("DOMContentLoaded", start);
+
+      let dyr = [
+        { navn: "gris", type: "pattedyr", levested: "gård", billede: "http://mabe-kea.dk/E19/pics/pig.png" },
+        { navn: "frø", type: "amfibie", levested: "natur", billede: "http://mabe-kea.dk/E19/pics/frog.png" },
+        { navn: "ræv", type: "pattedyr", levested: "natur", billede: "http://mabe-kea.dk/E19/pics/fox.png" },
+        { navn: "sild", type: "fisk", levested: "vand", billede: "http://mabe-kea.dk/E19/pics/sild.jpg" },
+        { navn: "krokodille", type: "krybdyr", levested: "vand", billede: "http://mabe-kea.dk/E19/pics/kroko.jpg" },
+      ];
+      console.log(dyr);
+
+      // Opgave 5 - Liste af dyr vises i DOM
+      function start() {
+        console.log("DOM er loadet");
+        // const listevisning = document.querySelector("#liste");
+        // dyr.forEach((hvertDyr) => {
+        //   listevisning.innerHTML += `<p>${hvertDyr.navn}, ${hvertDyr.type} fra ${hvertDyr.levested}</p>`;
+        // });
+
+        //opgave 6 - Dyrevisning med template
+        const container = document.querySelector("#liste");
+        const listevisning = document.querySelector("template");
+
+        dyr.forEach((hvertDyr) => {
+          let klon = listevisning.cloneNode(true).content;
+          klon.querySelector("h2").textContent = hvertDyr.navn;
+          klon.querySelector("img").src = hvertDyr.billede;
+          klon.querySelector("#type").textContent += hvertDyr.type;
+          klon.querySelector("#levested").textContent += hvertDyr.levested;
+
+          container.appendChild(klon);
+          console.log("test");
+        });
+      }
+    </script>
+  </body>
+</html>

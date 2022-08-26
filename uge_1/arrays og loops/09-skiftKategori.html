@@ -2,9 +2,26 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Billedskift</title>
   </head>
-  <body></body>
+
+  <body>
+    <img id="billede" src="https://placeimg.com/600/400/people" alt="people" />
+    <figcaption id="cap"></figcaption>
+
+    <script>
+      //Løsning
+      const kategorier = ["animals", "arch", "people", "nature", "tech"];
+
+      billede.addEventListener("click", skift);
+
+      function skift() {
+        const billedTal = Math.round(Math.random() * 10);
+        const kategoriIndex = Math.round(Math.random() * 4);
+        billede.src = "https://placeimg.com/600/400/" + kategorier[kategoriIndex] + "?t=" + billedTal;
+        billede.alt = kategorier[kategoriIndex] + " nr " + billedTal;
+        cap.textContent = kategorier[kategoriIndex] + " nr " + billedTal;
+      }
+    </script>
+  </body>
 </html>

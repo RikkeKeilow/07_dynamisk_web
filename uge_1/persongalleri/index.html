@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <main id="holder"></main>
+    <template>
+      <article>
+        <h2 class="fornavn"></h2>
+        <img class="billede" src="" alt=""></img>
+        <p id="titel"></p>
+        <p id="fødselsdag"></p>
+      </article>
+    </template>
+
+<style>
+    #holder {
+        display: grid;
+        grid-template-columns: 1fr, 1fr, 1fr, 1fr;
+        gap: 1em;
+    }
+    article {
+        border: 1px solid red;
+        padding: 1em;
+    }
+    main {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        grid-gap: 20px;
+    }
+    img {
+        max-width: 50%;
+        aspect-ratio: 1/1;
+        object-fit: contain;
+    }
+
+</style>
+
+     <script> 
+const endpoint = "https://persongalleri-5d3e.restdb.io/rest/persongalleri";
+const mereinfo = {
+    headers: {
+        "x-apikey": "600fe9211346a1524ff12e31",
+    },
+};
+
+async function hentData() {
+    const response = await fetch(endpoint, mereinfo);
+    const json = await response.json();
+    vis(json);
+    
+}
+
+    const main = document.querySelector("main");
+    const template = document.querySelector("template").content;
+
+function vis(json) {
+    console.log(json);
+    // const holder = document.querySelector("#holder");
+    // holder.classList.add("grid");
+    json.forEach((person) => {
+        const klon = template.cloneNode(true);
+        klon.querySelector(".billede").src = "faces/" + person.billede;
+        klon.querySelector(".fornavn").textContent = person.fornavn;
+        klon.querySelector("#titel").textContent = "Titel: " + person.titel;
+        klon.querySelector("#fødselsdag").textContent = "Fødselsdag: " + person.fødselsdag;
+        main.appendChild(klon);
+        
+    });
+} 
+hentData();
+
+    //   // Opgave 5 - Liste af dyr vises i DOM
+    //   function start() {
+    //     console.log("DOM er loadet");
+    //     // const listevisning = document.querySelector("#liste");
+    //     // dyr.forEach((hvertDyr) => {
+    //     //   listevisning.innerHTML += `<p>${hvertDyr.navn}, ${hvertDyr.type} fra ${hvertDyr.levested}</p>`;
+    //     // });
+
+    //     //opgave 6 - Dyrevisning med template
+    //     const container = document.querySelector("#liste");
+    //     const listevisning = document.querySelector("template");
+
+    //     dyr.forEach((hvertDyr) => {
+    //       let klon = listevisning.cloneNode(true).content;
+    //       klon.querySelector("h2").textContent = hvertDyr.navn;
+    //       klon.querySelector("img").src = hvertDyr.billede;
+    //       klon.querySelector("#type").textContent += hvertDyr.type;
+    //       klon.querySelector("#levested").textContent += hvertDyr.levested;
+
+    //       container.appendChild(klon);
+    //       console.log("test");
+    //     });
+    //   }
+    </script> 
+</body>
+</html>
