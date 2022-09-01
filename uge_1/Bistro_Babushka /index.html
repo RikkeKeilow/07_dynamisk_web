@@ -7,41 +7,60 @@
     <title>Document</title>
 </head>
 <body>
-
-    <main id="holder"></main>
+    <h1>Alle</h1>
+    <nav>
+        <button data-mad= "alle" class="valgt">Alle</button>
+        <button data-mad= "drikkevarer">Drikkevarer</button>
+        <button data-mad= "forretter">Forretter</button>
+        <button data-mad= "hovedretter">Hovedretter</button>
+        <button data-mad= "desserter">Desserter</button>
+        <button data-mad= "sideorders">Sideorders</button>
+    </nav>
+    <section></section>
     <template>
-      <article>
-        <h2 class="fornavn"></h2>
+      <article class="artikel">
         <img class="billednavn" src="" alt=""></img>
+        <h2 class="navn"></h2>
+        <p id="kortbeskrivelse"></p>
         <p id="kategori"></p>
-        <p id="info"></p>
+        <p id="pris"></p>
       </article>
     </template>
 
 <style>
-    #holder {
-        display: grid;
-        grid-template-columns: 1fr, 1fr, 1fr, 1fr;
-        gap: 1em;
+    body {
+        width: 1200px;
+        max-width: 100%;
+        margin: 0 auto;
     }
-    article {
-        border: 1px solid red;
-        padding: 1em;
-    }
-    main {
+    section {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
         grid-gap: 20px;
     }
     img {
-        max-width: 50%;
+        max-width: 100%;
         aspect-ratio: 1/1;
         object-fit: contain;
     }
 
+    .artikel:nth-child(2n + 1){
+    background-color: rgb(171, 171, 171);
+}
+    .valgt {
+        background-color: rgb(255, 255, 255);
+        color: black;
+    }
+
 </style>
 
-     <script> 
+<script> 
+const header = document.querySelector("header h1");
+document.addEventListener("DOMContentLoaded", start)
+let mad;
+let filter = "alle";
+
+function start() {
 const endpoint = "https://babushka-dd8a.restdb.io/rest/menu";
 const mereinfo = {
     headers: {
@@ -51,30 +70,43 @@ const mereinfo = {
 
 async function hentData() {
     const response = await fetch(endpoint, mereinfo);
-    const json = await response.json();
-    vis(json);
-    
+    mad = await response.json();
+    console.log(mad);
+    vis();
 }
 
-    const main = document.querySelector("main");
-    const template = document.querySelector("template").content;
+const filterKnapper = document.querySelectorAll("nav button");
+filterKnapper.forEach(knap => knap.addEventListener("click", filtrerMad));
 
-function vis(json) {
-    console.log(json);
-    // const holder = document.querySelector("#holder");
-    // holder.classList.add("grid");
-    json.forEach((person) => {
+function filtrerMad() {
+filter = this.dataset.mad;
+document.querySelector(".valgt").classList.remove("valgt");
+this.classList.add("valgt")
+vis();
+header.textContent = this.textContent;
+}
+
+const section = document.querySelector("section");
+const template = document.querySelector("template").content;
+
+function vis() {
+    console.log(mad);
+    section.textContent = "";
+    mad.forEach((ret) => {
+        console.log("mad", ret.mad);
+        if (filter == ret.kategori || filter == "alle") {
         const klon = template.cloneNode(true);
-        klon.querySelector(".billednavn").src = "medium/" + person.billednavn + "-md.jpg";
-        klon.querySelector(".fornavn").textContent = person.fornavn;
-        klon.querySelector("#kategori").textContent = "Kategori: " + person.kategori;
-        // klon.querySelector("#fødselsdag").textContent = "Fødselsdag: " + person.fødselsdag;
-        main.appendChild(klon);
-        
+        klon.querySelector(".billednavn").src = "medium/" + ret.billednavn + "-md.jpg";
+        klon.querySelector(".navn").textContent = ret.navn;
+        klon.querySelector("#kortbeskrivelse").textContent = ret.kortbeskrivelse;
+        klon.querySelector("#pris").textContent = "Pris: " + ret.pris + ",-";
+        section.appendChild(klon);
+        }
     });
 } 
-hentData();
 
+hentData();
+}
     </script> 
 </body>
 </html>

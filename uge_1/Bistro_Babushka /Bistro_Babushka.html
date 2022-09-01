@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="container">
+        <img id="splash" src="restaurant.png" alt="Billede fra restauranten" >
+        <p id="centrer">Bistro Babushka</p>
+    </div>
+    <main>
+    <h1>Alle</h1>
+    <nav>
+        <button data-mad= "alle" class="valgt">Alle</button>
+        <button data-mad= "drikkevarer">Drikkevarer</button>
+        <button data-mad= "forretter">Forretter</button>
+        <button data-mad= "hovedretter">Hovedretter</button>
+        <button data-mad= "desserter">Desserter</button>
+        <button data-mad= "sideorders">Sideorders</button>
+    </nav>
+    <section></section>
+    <template>
+      <article class="artikel">
+        <img class="billednavn" src="" alt=""></img>
+                   <div class="plads">
+        <h2 class="navn"></h2>
+        <p id="kortbeskrivelse"></p>
+        <p id="kategori"></p>
+        <p id="pris"></p>
+        </div>
+      </article>
+    </template>
+
+    <div id="popop">
+        <article>
+            <img class="stort_billede" src="" alt="" />
+            <div class="plads">
+            <h2></h2>
+            <p id="kortbeskrivelse"></p>
+            <p id="pris"></p>
+            </div>
+        </article>
+    </div>
+</main>
+<style>
+    #container {
+        position: relative;
+        text-align: center;
+}
+
+#centrer {
+        position: absolute;
+        top: 35%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size:6vw; 
+        font-family:Verdana, Geneva, Tahoma, sans-serif;
+    }
+
+    #splash {
+        opacity: 0.5;
+    }
+    
+.plads {
+    margin: 5%;
+}
+
+    main {
+        width: 1200px;
+        max-width: 100%;
+        margin: 0 auto;
+    }
+    section {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        grid-gap: 20px;
+    }
+    img {
+        max-width: 100%;
+        aspect-ratio: 1/1;
+        object-fit: contain;
+    }
+
+
+    .artikel:nth-child(2n + 1){
+    background-color: rgb(171, 171, 171);
+}
+    .valgt {
+        background-color: rgb(255, 255, 255);
+        color: black;
+    }
+
+    #popop {
+        position: fixed;
+        width: 100vw;
+        height: 100vh;
+        top: 0;
+        left: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        /* display: flex; */
+        justify-content: center;
+        align-items: center;
+        display: none;
+
+    }
+
+    #popop article {
+        max-width: 80%;
+        background-color: white;
+    }
+
+</style>
+
+<script> 
+const header = document.querySelector("h1");
+document.addEventListener("DOMContentLoaded", start)
+let mad;
+let filter = "alle";
+
+function start() {
+const endpoint = "https://babushka-dd8a.restdb.io/rest/menu";
+const mereinfo = {
+    headers: {
+        "x-apikey": "600ec2fb1346a1524ff12de4",
+    },
+};
+
+async function hentData() {
+    const response = await fetch(endpoint, mereinfo);
+    mad = await response.json();
+    console.log(mad);
+    vis();
+}
+
+const filterKnapper = document.querySelectorAll("nav button");
+filterKnapper.forEach(knap => knap.addEventListener("click", filtrerMad));
+
+function filtrerMad() {
+filter = this.dataset.mad;
+document.querySelector(".valgt").classList.remove("valgt");
+this.classList.add("valgt")
+vis();
+header.textContent = this.textContent;
+}
+
+const section = document.querySelector("section");
+const template = document.querySelector("template").content;
+
+function vis() {
+    console.log(mad);
+    section.textContent = "";
+    mad.forEach((ret) => {
+        console.log("mad", ret.mad);
+        if (filter == ret.kategori || filter == "alle") {
+        const klon = template.cloneNode(true);
+        klon.querySelector(".billednavn").src = "medium/" + ret.billednavn + "-md.jpg";
+        klon.querySelector(".navn").textContent = ret.navn;
+                klon.querySelector("article").addEventListener("click", () => visRet(ret));
+        klon.querySelector("#kortbeskrivelse").textContent = ret.kortbeskrivelse;
+        klon.querySelector("#pris").textContent = "Pris: " + ret.pris + ",-";
+        section.appendChild(klon);
+        }
+    });
+} 
+
+document.querySelector("#popop").addEventListener("click", () => (popop.style.display = "none"));
+
+function visRet(visOplysninger) {
+    console.log("visOplysninger");
+    const popop = document.querySelector("#popop");
+    popop.style.display = "flex";
+    popop.querySelector("h2").textContent = visOplysninger.navn;
+    popop.querySelector("#pris").textContent = "Pris: " + visOplysninger.pris + ",-";
+    popop.querySelector("#kortbeskrivelse").textContent = visOplysninger.kortbeskrivelse;
+    popop.querySelector(".stort_billede").src = "medium/" + visOplysninger.billednavn + "-md.jpg";
+
+}
+
+hentData();
+}
+    </script> 
+</body>
+</html>
